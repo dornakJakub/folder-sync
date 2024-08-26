@@ -5,6 +5,7 @@ import shutil
 import filecmp
 import logging
 from datetime import datetime
+from time import sleep
 
 src_dir = "/home/jakubdornak/programko/folder-sync/testFolder"
 dest_dir = "/home/jakubdornak/programko/folder-sync/copyFolder"
@@ -68,7 +69,9 @@ def parse_args():
     parser = argparse.ArgumentParser()
 
 if __name__ == "__main__":
-    parse_args()
-    log("STARTED")
-    sync_directories(src_dir, dest_dir)
-    log("DONE")
+    while True:
+        parse_args()
+        log("STARTED")
+        sync_directories(src_dir, dest_dir)
+        log("DONE")
+        sleep(5)
