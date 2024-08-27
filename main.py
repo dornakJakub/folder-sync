@@ -1,6 +1,5 @@
 import os
 import argparse
-import json
 import shutil
 import filecmp
 import logging
@@ -9,7 +8,9 @@ from time import sleep
 
 src_dir = "/home/jakubdornak/programko/folder-sync/testFolder"
 dest_dir = "/home/jakubdornak/programko/folder-sync/copyFolder"
-logging.basicConfig(filename="change.log", level=logging.INFO, format="%(message)s")
+log_file = "/home/jakubdornak/programko/folder-sync/change.log"
+run_period = 3600
+logging.basicConfig(filename=log_file, level=logging.INFO, format="%(message)s")
 
 def log(message):
     timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -61,17 +62,28 @@ def remove(src_dir, dest_dir):
 
 
 def sync_directories(src_dir, dest_dir):
+    log("STARTED")
     copy(src_dir, dest_dir)
     remove(src_dir, dest_dir)
-    
+    log("DONE")
 
 def parse_args():
     parser = argparse.ArgumentParser()
 
+    parser.add_argument("source_path", type=str, help="Path to the source directory")
+    parser.add_argument("destination_path", type=str, help="Path to the destination directory")
+    parser.add_argument("sync_interval", type=int, help="Interval between synchronizations")
+    parser.add_argument("log_path", type=str, help="Path to the file containing synchronization logs")
+
+    args = parser.parse_args()
+
+    src_dir = args.source_path
+    dest_dir = args.destination_path
+    run_period = args.sync_interval
+    log_file = args.log_path
+
 if __name__ == "__main__":
     while True:
         parse_args()
-        log("STARTED")
         sync_directories(src_dir, dest_dir)
-        log("DONE")
         sleep(5)
