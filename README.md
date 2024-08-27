@@ -15,3 +15,4 @@ Folder-sync is a one way folder synchronization tool, which makes exact replica 
   **-h, --help**        - show help message
 
 
+**Warning:** The script can run into error if there happens to be file without suffix in the replica folder and there occurs folder with the same path in the source folder. Though this insufficiency should be fixed soon.
