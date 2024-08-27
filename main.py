@@ -6,11 +6,10 @@ import logging
 from datetime import datetime
 from time import sleep
 
-src_dir = "/home/jakubdornak/programko/folder-sync/testFolder"
-dest_dir = "/home/jakubdornak/programko/folder-sync/copyFolder"
-log_file = "/home/jakubdornak/programko/folder-sync/change.log"
+src_dir = None
+dest_dir = None
+log_file = None
 run_period = 3600
-logging.basicConfig(filename=log_file, level=logging.INFO, format="%(message)s")
 
 def log(message):
     timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -63,8 +62,8 @@ def remove(src_dir, dest_dir):
 
 def sync_directories(src_dir, dest_dir):
     log("STARTED")
-    copy(src_dir, dest_dir)
     remove(src_dir, dest_dir)
+    copy(src_dir, dest_dir)
     log("DONE")
 
 def parse_args():
@@ -77,10 +76,16 @@ def parse_args():
 
     args = parser.parse_args()
 
+    global src_dir
+    global dest_dir
+    global run_period
+    global log_file
+
     src_dir = args.source_path
     dest_dir = args.destination_path
     run_period = args.sync_interval
     log_file = args.log_path
+    logging.basicConfig(filename=log_file, level=logging.INFO, format="%(message)s")
 
 if __name__ == "__main__":
     while True:
